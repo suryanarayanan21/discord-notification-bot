@@ -4,7 +4,8 @@
   "description": "Discord automated Reddit based Notification Service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "Notificaiton",
@@ -16,8 +17,12 @@
   "author": "Suryanarayanan Ananthakrishnan",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.8.2",
     "@discordjs/rest": "^0.1.0-canary.0",
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.3.0"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
   }
 }
