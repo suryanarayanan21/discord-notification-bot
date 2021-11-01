@@ -5,6 +5,7 @@ module.exports = {
     .setName("notify-about")
     .setDescription("Let's me know you care about something"),
   async execute(interaction) {
-    await interaction.reply("Pong!");
+    await interaction.deferReply();
+    await interaction.editReply("Pong!");
   },
 };
