@@ -1,9 +1,11 @@
 const fs = require("fs");
 const pathModule = require("path");
-const { Collection } = require("discord.js");
 const router = require("express").Router();
+const { Collection } = require("discord.js");
 
 let attachEventListeners = (client) => {
+  console.log("Fetching Event Listeners...");
+
   const eventFiles = fs
     .readdirSync("./events")
     .filter((file) => file.endsWith(".js"));
@@ -16,9 +18,12 @@ let attachEventListeners = (client) => {
       client.on(event.name, (...args) => event.execute(...args));
     }
   });
+
+  console.log("Registered Event Listeners");
 };
 
 let attachCommands = (client) => {
+  console.log("Fetching Commands...");
   client.commands = new Collection();
   const commandFiles = fs
     .readdirSync("./commands")
@@ -28,6 +33,7 @@ let attachCommands = (client) => {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command);
   });
+  console.log("Fetched Commands and Handlers");
 };
 
 let getAllFileNamesRecursive = (path) => {
@@ -64,8 +70,10 @@ let setRouteFunctions = (router) => {
 };
 
 let attachRoutes = (server) => {
+  console.log("Fetching Server Route Handlers...");
   setRouteFunctions(router);
   server.use("/", router);
+  console.log("Registered Server Routes");
 };
 
 module.exports = { attachCommands, attachEventListeners, attachRoutes };
