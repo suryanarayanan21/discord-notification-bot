@@ -1,8 +1,20 @@
 const { Client, Intents } = require("discord.js");
-const { attachEventListeners, attachCommands } = require("./startup");
+const server = require("express")();
+const {
+  attachEventListeners,
+  attachCommands,
+  attachRoutes,
+} = require("./startup");
 
 // In Dev environment, load environment file
 require("dotenv").config();
+
+// Initialize Server
+
+attachRoutes(server);
+server.listen(process.env.PORT, () => {
+  console.log(`Server listening at Port: ${process.env.PORT}`);
+});
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
