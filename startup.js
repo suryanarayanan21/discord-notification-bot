@@ -41,11 +41,11 @@ let getAllFileNamesRecursive = (path) => {
 
   let files = directoryItems
     .filter((item) => !item.isDirectory() && item.name.endsWith(".js"))
-    .map((file) => path + "\\" + file.name);
+    .map((file) => path + pathModule.sep + file.name);
 
   let folders = directoryItems
     .filter((item) => item.isDirectory())
-    .map((folder) => path + "\\" + folder.name);
+    .map((folder) => path + pathModule.sep + folder.name);
 
   folders.forEach((folder) => {
     let _files = getAllFileNamesRecursive(folder);
@@ -56,7 +56,7 @@ let getAllFileNamesRecursive = (path) => {
 };
 
 let setRouteFunctions = (router) => {
-  let allFiles = getAllFileNamesRecursive(__dirname + "\\api");
+  let allFiles = getAllFileNamesRecursive(__dirname + pathModule.sep + "api");
 
   allFiles.forEach((fileName) => {
     let relativeName = pathModule.relative(__dirname, fileName);
