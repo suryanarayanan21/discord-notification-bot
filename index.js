@@ -7,7 +7,7 @@ const {
 } = require("./startup");
 
 // In Dev environment, load environment file
-require("dotenv").config();
+if (process.env.ENVIRONMENT === "DEV") require("dotenv").config();
 
 // Initialize Server
 
