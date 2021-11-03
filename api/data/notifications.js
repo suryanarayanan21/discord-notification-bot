@@ -1,7 +1,7 @@
 module.exports = {
-  handler(router) {
+  handler(router, args) {
     router.get((req, res) => {
-      res.status(200).send({ message: "done" });
+      res.status(200).send({ client: JSON.stringify(args.client) });
     });
   },
 };

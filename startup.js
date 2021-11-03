@@ -1,6 +1,8 @@
 const fs = require("fs");
 const pathModule = require("path");
 const router = require("express").Router();
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
 const { Collection } = require("discord.js");
 
 let attachEventListeners = (client) => {
@@ -55,7 +57,7 @@ let getAllFileNamesRecursive = (path) => {
   return files;
 };
 
-let setRouteFunctions = (router) => {
+let setRouteFunctions = (router, args) => {
   let allFiles = getAllFileNamesRecursive(__dirname + pathModule.sep + "api");
 
   allFiles.forEach((fileName) => {
@@ -65,15 +67,41 @@ let setRouteFunctions = (router) => {
       .join(pathModule.posix.sep);
     let route = routeWithExtension.slice(0, -3);
     let { handler } = require(fileName);
-    handler(router.route(`/${route}`));
+    handler(router.route(`/${route}`), args);
   });
 };
 
-let attachRoutes = (server) => {
+let attachRoutes = (server, args) => {
   console.log("Fetching Server Route Handlers...");
-  setRouteFunctions(router);
+  setRouteFunctions(router, args);
   server.use("/", router);
   console.log("Registered Server Routes");
 };
 
-module.exports = { attachCommands, attachEventListeners, attachRoutes };
+let registerCommands = () => {
+  const commands = [];
+  const commandFiles = fs
+    .readdirSync("./commands")
+    .filter((file) => file.endsWith(".js"));
+
+  commandFiles.forEach((file) => {
+    const command = require(`./commands/${file}`);
+    commands.push(command.data.toJSON());
+  });
+
+  const rest = new REST({ version: "9" }).setToken(process.env.BOT_TOKEN);
+
+  rest
+    .put(Routes.applicationCommands(process.env.CLIENT_ID), {
+      body: commands,
+    })
+    .then(() => console.log("Successfully registered application commands."))
+    .catch(console.error);
+};
+
+module.exports = {
+  attachCommands,
+  attachEventListeners,
+  attachRoutes,
+  registerCommands,
+};
