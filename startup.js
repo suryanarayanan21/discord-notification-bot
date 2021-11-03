@@ -1,6 +1,7 @@
 const fs = require("fs");
 const pathModule = require("path");
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Collection } = require("discord.js");
@@ -67,6 +68,7 @@ let setRouteFunctions = (router, args) => {
       .join(pathModule.posix.sep);
     let route = routeWithExtension.slice(0, -3);
     let { handler } = require(fileName);
+    router.use(express.json());
     handler(router.route(`/${route}`), args);
   });
 };
