@@ -3,3 +3,6 @@ node_modules
 
 # Environment File
 .env
+
+# File Database
+notificationRules

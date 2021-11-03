@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const NotificationService = require("../services/NotificationService.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,7 +20,19 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    let notificationQuery = interaction.options.getString("notify-when");
+    let sourceSearchString = interaction.options.getString("search-string");
+    let channelId = interaction.channelId;
+
     await interaction.deferReply();
-    await interaction.editReply("Pong!");
+    await new NotificationService().saveNotificationRule({
+      notificationQuery,
+      sourceSearchString,
+      channelId,
+    });
+    await interaction.editReply({
+      content: "Notification Rules updated!",
+      ephemeral: true,
+    });
   },
 };
