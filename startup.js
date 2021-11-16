@@ -5,6 +5,17 @@ const router = express.Router();
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Collection } = require("discord.js");
+const { initializeApp } = require("firebase/app");
+
+let initializeFirestore = () => {
+  console.log("Initializing Firebase");
+  const firebaseApp = initializeApp({
+    apiKey: process.env.FB_API_KEY,
+    authDomain: process.env.FB_AUTH_DOMAIN,
+    projectId: process.env.FB_PROJECT_ID,
+  });
+  console.log("Initialized Firebase");
+};
 
 let attachEventListeners = (client) => {
   console.log("Fetching Event Listeners...");
@@ -106,4 +117,5 @@ module.exports = {
   attachEventListeners,
   attachRoutes,
   registerCommands,
+  initializeFirestore,
 };

@@ -5,6 +5,7 @@ const {
   attachCommands,
   attachRoutes,
   registerCommands,
+  initializeFirestore,
 } = require("./startup");
 
 // In Dev environment, load environment file
@@ -18,8 +19,13 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 attachEventListeners(client);
 attachCommands(client);
 
+// Initialize Firestore
+initializeFirestore();
+
 // Initialize Server
 // Also Pass arguements that are needed for use within the routes
+// Parameters passed:
+//   client: Discord Client
 attachRoutes(server, { client });
 server.listen(process.env.PORT, () => {
   console.log(`Server listening at Port: ${process.env.PORT}`);
