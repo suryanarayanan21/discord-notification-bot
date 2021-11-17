@@ -19,7 +19,6 @@ jobs:
           export FB_API_KEY=${{ secrets.FB_API_KEY }}
           export FB_AUTH_DOMAIN=${{ secrets.FB_AUTH_DOMAIN }}
           export FB_PROJECT_ID=${{ secrets.FB_PROJECT_ID }}
-          npm start
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
